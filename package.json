@@ -18,6 +18,8 @@
   },
   "homepage": "https://github.com/B-Stefan/DHAL#readme",
   "dependencies": {
-    "bootbot": "^1.0.12"
+    "body-parser": "^1.17.1",
+    "express": "^4.15.2",
+    "messenger-bot": "^2.4.0"
   }
 }
