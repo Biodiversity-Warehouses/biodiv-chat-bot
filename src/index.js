@@ -3,6 +3,8 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const Bot = require('messenger-bot');
 
+let port = process.env.PORT || 8080;
+
 let bot = new Bot({
   token: process.env.TOKEN,
   verify: process.env.VERIFY,
@@ -43,4 +45,4 @@ app.post('/', (req, res) => {
   res.end(JSON.stringify({status: 'ok'}))
 });
 
-http.createServer(app).listen(3000);
+http.createServer(app).listen(port);
