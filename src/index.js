@@ -40,9 +40,18 @@ app.get('/', (req, res) => {
   return bot._verify(req, res)
 });
 
+
+app.get('/hello', (req, res) => {
+  return res.send(JSON.stringify({status: 'hello'}))
+});
+
+
+
 app.post('/', (req, res) => {
   bot._handleMessage(req.body);
   res.end(JSON.stringify({status: 'ok'}))
 });
 
-http.createServer(app).listen(port);
+http.createServer(app).listen(port, ()=>{
+  console.log("Server is up and running on port: " + port)
+});
