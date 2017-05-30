@@ -5,7 +5,8 @@ const Bot = require('messenger-bot');
 const Conversation = require('./conversation.js');
 
 
-let port = process.env.PORT || 8080;
+const port = process.env.PORT || 8080;
+const conversation = new Conversation.Conversation();
 
 let bot = new Bot({
   token: process.env.TOKEN,
@@ -23,7 +24,16 @@ bot.on('message', (payload, reply) => {
   bot.getProfile(payload.sender.id, (err, profile) => {
     if (err) throw err;
 
-    reply({ text }, (err) => {
+    let { answer, answerOptions}= conversation.processMessage(text);
+    let quick_replies = answerOptions.map((optionStr)=>{
+      //Quick replies see: https://developers.facebook.com/docs/messenger-platform/send-api-reference/quick-replies
+      return    {
+        "content_type":optionStr,
+        "title":optionStr,
+        "payload":optionStr.toUpperCase()
+      }
+    });
+    reply({ text: answer, quick_replies: quick_replies }, (err) => {
       if (err) throw err;
 
       console.log(`Echoed back to ${profile.first_name} ${profile.last_name}: ${text}`)
@@ -56,7 +66,7 @@ http.createServer(app).listen(port, ()=>{
   console.log("Server is up and running on port: " + port)
 });
 
-var conversation = new Conversation.Conversation();
+/*
 console.log(conversation.processMessage("Test").answer);
 console.log(conversation.processMessage("hilfe").answer);
 console.log(conversation.processMessage("wo").answer);
@@ -64,4 +74,4 @@ console.log(conversation.processMessage("bla-bla-bla").answer);
 console.log(conversation.processMessage("ja").answer);
 console.log(conversation.processMessage("wo").answer);
 
-
+*/
