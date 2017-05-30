@@ -9,7 +9,7 @@ var Conversation = function() {
 		console.log("Input> " + message);
 		var splitedMessage = message.split(/[ ,]+/);
 
-		if(this.firstmessage) {
+		if(this.firstmessage || match(splitedMessage,["hey", "moin", "hallo", "hi", "servus"])) {
 			this.firstmessage = false;
 			var startText = 'Hallo, ich bin DHAL, ein interaktiver Paketverfolgungsdienst ' +
 			'Schicke mir einfach eine Sendungsnummer oder ein Bild des QR Codes auf deinem ' +
