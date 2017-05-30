@@ -1,12 +1,22 @@
 var Conversation = function() {
 	this.lastAnswer = null;
+	this.lastAction = Date.now();
 	this.firstmessage = true;
 
 	this.package = null;
 	this.pushUpdatesToUser = false;
 
+	this.isActive = function(){
+			let diff = this.lastAction - Date.now();
+			let fiveMinInMs = 1000 * 60 * 5;
+			if(diff > fiveMinInMs ){
+				return false
+			}
+			return true
+	};
 	this.processMessage = function(message) {
 		console.log("Input> " + message);
+    this.lastAction = Date.now();
 		var splitedMessage = message.split(/[ ,]+/);
 
 		if(this.firstmessage || match(splitedMessage,["hey", "moin", "hallo", "hi", "servus"])) {
