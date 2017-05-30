@@ -120,6 +120,11 @@ var Conversation = function() {
 			return { answer: woherText, answerOptions: answerOptions };		
 		}
 
+		return {
+      answer: "Ich konnte dich leider nicht verstehen... :(",
+      answerOptions: ["Hilfe"]
+    }
+
 
 	};
 
