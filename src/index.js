@@ -35,9 +35,14 @@ bot.on('message', (payload, reply) => {
         "payload":optionStr.toUpperCase()
       }
     });
-    let response = { text: answer, quick_replies: quick_replies };
+
+
+    let response = { text: answer};
+    if(quick_replies.length > 0 ){
+      response.quick_replies = quick_replies
+    }
     console.log("Send response  ", answer,answerOptions);
-    reply({ text: answer, quick_replies: quick_replies }, (err) => {
+    reply(response, (err) => {
       console.log("Error:", err);
       if (err) throw err;
 
