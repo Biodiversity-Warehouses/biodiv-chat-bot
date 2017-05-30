@@ -23,8 +23,9 @@ bot.on('message', (payload, reply) => {
 
   bot.getProfile(payload.sender.id, (err, profile) => {
     if (err) throw err;
-
+    console.log("New Message from user ", text);
     let { answer, answerOptions}= conversation.processMessage(text);
+    console.log("Got answer from processMessage: ", answer,answerOptions);
     let quick_replies = answerOptions.map((optionStr)=>{
       //Quick replies see: https://developers.facebook.com/docs/messenger-platform/send-api-reference/quick-replies
       return    {
@@ -33,7 +34,10 @@ bot.on('message', (payload, reply) => {
         "payload":optionStr.toUpperCase()
       }
     });
+    let response = { text: answer, quick_replies: quick_replies };
+    console.log("Send response  ", answer,answerOptions);
     reply({ text: answer, quick_replies: quick_replies }, (err) => {
+      console.log("Error:", err);
       if (err) throw err;
 
       console.log(`Echoed back to ${profile.first_name} ${profile.last_name}: ${text}`)
