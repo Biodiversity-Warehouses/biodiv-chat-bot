@@ -98,8 +98,9 @@ var Conversation = function() {
 
 		if(match(splitedMessage, ["wer"])) {
 			if(!this.package) {
-				var noPackage = 'Welches packet meinst du?';
-				return noPackage;
+        var noPackageText = 'Welches packet meinst du?';
+        var answerOptions = [];
+        return { answer: noPackageText, answerOptions: answerOptions };
 			}
 
 			var werText = 'Amazon hat Dein Paket abgeschickt. Kann ich dir sonst noch irgendwie weiterhelfen?';
@@ -109,8 +110,9 @@ var Conversation = function() {
 
 		if(match(splitedMessage, ["woher"])) {
 			if(!this.package) {
-				var noPackage = 'Welches packet meinst du?';
-				return noPackage;
+        var noPackageText = 'Welches packet meinst du?';
+        var answerOptions = [];
+        return { answer: noPackageText, answerOptions: answerOptions };
 			}
 
 			var woherText = 'Dein Paket kommt aus China. Wie kannst du da nur bestellen, du Sau?';
