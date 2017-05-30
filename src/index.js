@@ -30,8 +30,12 @@ bot.on('error', (err) => {
 });
 
 bot.on('message', (payload, reply) => {
-  console.log("new Palyload", payload); 
+  console.log("new Palyload", payload);
+
   let text = payload.message.text;
+  if(payload.message.attachments){
+    text = "Bremne-Fisch-Krabbe"
+  }
   let senderId = payload.sender.id;
   //Create new converstation if necessary
   if(!conversations.hasOwnProperty(senderId)){
