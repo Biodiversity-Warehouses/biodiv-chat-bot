@@ -24,6 +24,7 @@ bot.on('message', (payload, reply) => {
   bot.getProfile(payload.sender.id, (err, profile) => {
     if (err) throw err;
     console.log("New Message from user ", text);
+    console.log("converstaion object", conversation);
     let { answer, answerOptions}= conversation.processMessage(text);
     console.log("Got answer from processMessage: ", answer,answerOptions);
     let quick_replies = answerOptions.map((optionStr)=>{
