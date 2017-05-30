@@ -20,13 +20,15 @@ var Conversation = function() {
 
 			return { answer: startText, answerOptions: answerOptions };
 		}
+		let yes = ["ja", "ok", "jo", "jup"];
+		let no = ["nein", "ok", "nö", "ne", "auf gar keinen fall", "halt die fresse"];
 
-		if(match(splitedMessage, ["ja", "nein"])) {
+    if(match(splitedMessage, yes.concat(no))) {
 			var userAnswer = message;
 			var answerOptions = [];
 
 			this.lastAnswer = null;
-			if(userAnswer == "ja") {
+			if(match(splitedMessage, yes)) {
 				var jaText = "Ich halte dich auf dem laufenden."; 
 				return { answer: jaText, answerOptions: answerOptions };
 			} else {
@@ -71,11 +73,15 @@ var Conversation = function() {
 			return answer;
 		}
 
-		if(match(splitedMessage, ["wo", "Packetstandort", "Standort"])) {
+		const askForPackage  = ()=> {
+        var noPackageText = 'Welches packet meinst du?';
+        var answerOptions = ["Hilfe"];
+        return {answer: noPackageText, answerOptions: answerOptions};
+
+    }
+		if(match(splitedMessage, ["wo", "Packetstandort", "Standort", "Sendungsverfolgung", "Status","Paketstatus"])) {
 			if(!this.package) {
-				var noPackageText = 'Welches packet meinst du?';
-				var answerOptions = [];
-				return { answer: noPackageText, answerOptions: answerOptions };
+				return askForPackage()
 			}
 
 			var answerOptions = [];
@@ -84,11 +90,9 @@ var Conversation = function() {
 		}
 
 		if(match(splitedMessage, ["wann", "Zustellungstermin"])) {
-			if(!this.package) {
-				var noPackageText = 'Welches packet meinst du?';
-				var answerOptions = [];
-				return { answer: noPackageText, answerOptions: answerOptions };
-			}
+      if(!this.package) {
+        return askForPackage()
+      }
 
 			var wannText = 'Dein Paket wird Dir voraussichtlich am Montag (05.05.2017) zwischen 11:00 Uhr und 14:00 Uhr zugestellt. Soll ich dir bescheid geben, wenn es dazu ein Update gibt?';
 			var answerOptions = ["Ja", "Nein"];
@@ -97,11 +101,9 @@ var Conversation = function() {
 
 
 		if(match(splitedMessage, ["wer"])) {
-			if(!this.package) {
-        var noPackageText = 'Welches packet meinst du?';
-        var answerOptions = [];
-        return { answer: noPackageText, answerOptions: answerOptions };
-			}
+      if(!this.package) {
+        return askForPackage()
+      }
 
 			var werText = 'Amazon hat Dein Paket abgeschickt. Kann ich dir sonst noch irgendwie weiterhelfen?';
 			var answerOptions = [];
@@ -109,11 +111,9 @@ var Conversation = function() {
 		}
 
 		if(match(splitedMessage, ["woher"])) {
-			if(!this.package) {
-        var noPackageText = 'Welches packet meinst du?';
-        var answerOptions = [];
-        return { answer: noPackageText, answerOptions: answerOptions };
-			}
+      if(!this.package) {
+        return askForPackage()
+      }
 
 			var woherText = 'Dein Paket kommt aus China. Wie kannst du da nur bestellen, du Sau?';
 			var answerOptions = [];
