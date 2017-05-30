@@ -6,7 +6,7 @@ const Conversation = require('./conversation.js');
 
 
 const port = process.env.PORT || 8080;
-const conversation = new Conversation.Conversation();
+var conversation = new Conversation.Conversation();
 
 let bot = new Bot({
   token: process.env.TOKEN,
