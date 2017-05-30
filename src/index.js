@@ -29,7 +29,7 @@ bot.on('message', (payload, reply) => {
     let quick_replies = answerOptions.map((optionStr)=>{
       //Quick replies see: https://developers.facebook.com/docs/messenger-platform/send-api-reference/quick-replies
       return    {
-        "content_type":optionStr,
+        "content_type":"TEXT",
         "title":optionStr,
         "payload":optionStr.toUpperCase()
       }
