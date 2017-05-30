@@ -22,7 +22,7 @@ var Conversation = function() {
 		if(this.firstmessage || match(splitedMessage,["hey", "moin", "hallo", "hi", "servus"])) {
 			this.firstmessage = false;
 			var startText = 'Hallo, ich bin DHAL, ein interaktiver Paketverfolgungsdienst 📦 ' +
-			'Schicke mir einfach eine Sendungsnummer oder ein Bild des QR Codes auf deinem ' +
+			'Schicke mir einfach eine Sendungsnummer oder ein Bild des QR-Codes auf deinem ' +
 			'Sendungsschein, damit ich Dir sagen kann wie der Status Deines Pakets ist. ' +
 			'Schreibe einfach HILFE, wenn Du wissen möchtest wie ich dir helfen kann.';
 
@@ -76,7 +76,7 @@ var Conversation = function() {
 
 			var packageFoundText = 'Das Paket ' + this.package.trackingNumber + ' habe ich gefunden. 👌 Status: ' + this.package.status + ' '+ this.package.stand
 				'\n\nSoll ich Dich bezüglich dieses Pakets auf dem Laufenden halten? 💡';
-			var answerOptions = ["Packetstandort", "Zustellungstermin"];
+			var answerOptions = ["Paketstandort", "Zustellungstermin"];
 
 			var answer = { answer: packageFoundText, answerOptions: answerOptions };
 			this.lastAnswer = answer;
