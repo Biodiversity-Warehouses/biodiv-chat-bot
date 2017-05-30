@@ -30,6 +30,7 @@ bot.on('error', (err) => {
 });
 
 bot.on('message', (payload, reply) => {
+  console.log("new Palyload", payload); 
   let text = payload.message.text;
   let senderId = payload.sender.id;
   //Create new converstation if necessary
