@@ -2,6 +2,8 @@ const http = require('http');
 const express = require('express');
 const bodyParser = require('body-parser');
 const Bot = require('messenger-bot');
+const Conversation = require('./conversation.js');
+
 
 let port = process.env.PORT || 8080;
 
@@ -45,8 +47,6 @@ app.get('/hello', (req, res) => {
   return res.send(JSON.stringify({status: 'hello'}))
 });
 
-
-
 app.post('/', (req, res) => {
   bot._handleMessage(req.body);
   res.end(JSON.stringify({status: 'ok'}))
@@ -55,3 +55,13 @@ app.post('/', (req, res) => {
 http.createServer(app).listen(port, ()=>{
   console.log("Server is up and running on port: " + port)
 });
+
+var conversation = new Conversation.Conversation();
+console.log(conversation.processMessage("Test").answer);
+console.log(conversation.processMessage("hilfe").answer);
+console.log(conversation.processMessage("wo").answer);
+console.log(conversation.processMessage("bla-bla-bla").answer);
+console.log(conversation.processMessage("ja").answer);
+console.log(conversation.processMessage("wo").answer);
+
+
