@@ -6,7 +6,7 @@ const Conversation = require('./conversation.js');
 
 
 const port = process.env.PORT || 8080;
-var conversation = new Conversation.Conversation();
+const conversations = {}
 
 let bot = new Bot({
   token: process.env.TOKEN,
@@ -20,8 +20,14 @@ bot.on('error', (err) => {
 
 bot.on('message', (payload, reply) => {
   let text = payload.message.text;
+  let senderId = payload.sender.id;
+  //Create new converstation if necessary
+  if(!conversations.hasOwnProperty(senderId)){
+    conversations[senderId] = new Conversation();
+  }
+  let conversation = conversations[senderId];
 
-  bot.getProfile(payload.sender.id, (err, profile) => {
+  bot.getProfile(senderId, (err, profile) => {
     if (err) throw err;
     console.log("New Message from user ", text);
     console.log("converstaion object", conversation);
