@@ -6,8 +6,19 @@ const Conversation = require('./conversation.js');
 
 
 const port = process.env.PORT || 8080;
-const conversations = {}
+const conversations = {};
 
+function removeOldConversation(){
+
+  setInterval(()=>{
+    Object.keys(conversations)
+        .map((key)=>{ return {key:key, value: conversations[key]}})
+        .filter((keyValue)=>keyValue.value.isActive())
+        .forEach((keyValue)=>{
+            delete conversations[keyValue.key]
+        })
+  },1000 * 60 * 5)
+}
 let bot = new Bot({
   token: process.env.TOKEN,
   verify: process.env.VERIFY,
@@ -80,9 +91,13 @@ app.post('/', (req, res) => {
 
 http.createServer(app).listen(port, ()=>{
   console.log("Server is up and running on port: " + port)
+  removeOldConversation()
 });
 
+
 /*
+
+let conversation = new Conversation();
 console.log(conversation.processMessage("Test").answer);
 console.log(conversation.processMessage("hilfe").answer);
 console.log(conversation.processMessage("wo").answer);

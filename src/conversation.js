@@ -158,4 +158,4 @@ function match(splitedMessage, keyWords) {
 }
 
 
-exports.Conversation = Conversation;
+module.exports = Conversation;
