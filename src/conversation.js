@@ -4,11 +4,14 @@ var Conversation = function(speciesList) {
 	this.firstmessage = true;
 	this.inFindingProcess = false;
 
-	this.speciesCommonNames = speciesList.map((obj)=>obj.triname);
-	this.speciesSientificNames = speciesList.map((obj)=>obj.sciname);
+	this.speciesList = speciesList;
+
+	let commonNames = speciesList.map((obj)=>obj.triname);
+	let scientificNames = speciesList.map((obj)=>obj.sciname);
+  this.speciesNames = commonNames.concat(scientificNames);
 
 	this.location = null;
-	this.speciesName = null;
+	this.species = null;
 
 	this.isActive = function(){
 			let diff = this.lastAction - Date.now();
@@ -84,13 +87,37 @@ var Conversation = function(speciesList) {
           answerOptions: ["Nachweisquallität", "Nachweismethode"]
         };
 			}
-    	else if(match([message],this.speciesCommonNames) || match([message],this.speciesSientificNames)){
+    	else if(match([message],this.speciesNames)){
 
-        return {
-        	answer: "Sehr schön, hab ich verstanden du hast " + splitedMessage + " bei dir gesehen. " +
-					"\n Es wäre super wenn du mir noch deinen Standort zeigen könntest?",
-					locationRequest: true
-        };
+				let potentialSpecies = this.speciesList.filter((species)=> {
+
+					let nameSplits = species.triname.split(" ");
+					let nameSplits = nameSplits.concat(species.sciname.split(" "))
+
+					console.log("nameSplits",nameSplits);
+					return match(splitedMessage,nameSplits )
+        });
+
+				console.log("potentialSpecies", potentialSpecies);
+
+				if(potentialSpecies.length == 0 ){
+          return {
+            answer: "Irgendwas ist hier schief gelaufen :( Ich konnte irgendwie keine Spezies finden ... "
+          };
+				}
+				else if (potentialSpecies.length == 1 ){
+          return {
+            answer: "Sehr schön, hab ich verstanden du hast " + message + " bei dir gesehen. " +
+            "\n Es wäre super wenn du mir noch deinen Standort zeigen könntest?"
+          };
+				}else {
+          return {
+            answer: "Huch da brauch ich noch ein wenig mehr Infos.\nEs gibt mehrere Spezies, bitte wähle die richtige aus: ",
+            answerOptions: potentialSpecies.map((species)=>species.triname)
+          };
+				}
+
+
 
 			}
 

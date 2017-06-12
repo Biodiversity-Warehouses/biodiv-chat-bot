@@ -32,13 +32,13 @@ class Api {
 
     }).then((res)=>res.json())
   }
-  reportFinding(accessToken){
+  reportFinding(accessToken, speciesid, count,locationlat,locationlng, date){
     return fetch(this.BACKEND_URL + "reportsighting/save", {
       method: 'POST',
-      body: '{"sightingid":-1,"species":[{"speciesid":5,"count":1,"comment":"test","classified":false}],"sourcetypeid":7,"locationlat":53.055419,"locationlng":8.783491,"locationinac":"0","locationcomment":"test","detailsevqualiid":1,"detailsevmethodid":6,"detailsdatefrom":"2017-06-12T22:00:00.000Z","detailsdatefromaccurancy":3,"detailsdateto":"2017-06-12T22:00:00.000Z","detailsdatetoaccurancy":3,"detailscomment":"","rights":[{"id":1,"name":"app.sighting.details.report.right.publish.name","description":"app.sighting.details.report.right.publish.desc","position":1,"default":false,"value":true},{"id":2,"name":"app.sighting.details.report.right.coords.name","description":"app.sighting.details.report.right.coords.desc","position":2,"default":false},{"id":3,"name":"app.sighting.details.report.right.export.name","description":"app.sighting.details.report.right.export.desc","position":3,"default":false}],"reference":"test","addprops":{"waterbodytype":"","depthFrom":"","depthTo":"","width":"","height":"","length":""},"isdraft":false}',
+      body: '{"sightingid":-1,"species":[{"speciesid":'+speciesid+',"count":'+count+',"comment":"test","classified":false}],"sourcetypeid":7,"locationlat":'+locationlat+',"locationlng":'+locationlng+',"locationinac":"0","locationcomment":"test","detailsevqualiid":1,"detailsevmethodid":6,"detailsdatefrom":'+date.toISOString()+',"detailsdatefromaccurancy":3,"detailsdateto":"2017-06-12T22:00:00.000Z","detailsdatetoaccurancy":3,"detailscomment":"","rights":[{"id":1,"name":"app.sighting.details.report.right.publish.name","description":"app.sighting.details.report.right.publish.desc","position":1,"default":false,"value":true},{"id":2,"name":"app.sighting.details.report.right.coords.name","description":"app.sighting.details.report.right.coords.desc","position":2,"default":false},{"id":3,"name":"app.sighting.details.report.right.export.name","description":"app.sighting.details.report.right.export.desc","position":3,"default":false}],"reference":"test","addprops":{"waterbodytype":"","depthFrom":"","depthTo":"","width":"","height":"","length":""},"isdraft":false}',
       headers: {
           "Accept":"application/json, text/plain, */*",
-         "accesstoken":"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VybmFtZSI6ImJkdyIsInVzZXJpZCI6MiwidGltZXN0YW1wIjoiMjAxNy0wNi0xMlQxMDoyNjoyNS44MzFaIiwiaWF0IjoxNDk3MjYzMTg1LCJleHAiOjE0OTcyNzAzODV9.XVxPZ0SEmzbeNUdnFmgSo1RDD1VIxRP-ww62F4aHnwo",
+         "accesstoken":accessToken,
          "addprops":"@addprops",
          "Content-Type":"application/json;charset=UTF-8",
          "currentlocale":"en_US",

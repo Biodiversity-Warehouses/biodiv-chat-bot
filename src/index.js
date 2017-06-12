@@ -35,6 +35,7 @@ bot.on('error', (err) => {
 
 bot.on('message', (payload, reply) => {
   console.log("new Palyload", payload);
+  console.log("new Palyload in Json ", JSON.stringify(payload));
 
   let text = payload.message.text ? payload.message.text : "";
   console.log(payload.message.attachments);
@@ -137,6 +138,7 @@ http.createServer(app).listen(port, () => {
 const Api = require("./api");
 
 let api = new Api();
+
 
 /*
 
