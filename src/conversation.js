@@ -126,7 +126,7 @@ var Conversation = function(speciesList) {
         console.log("Choose species text ", this.speciesCommonNames);
         return {
           answer: "Leider habe ich dich nicht so recht verstanden, hier einige Vorschläge was für Spezies ich so im Angebot hätte",
-          answerOptions: this.species.map((species)=>species.triname)
+          answerOptions: this.speciesList.map((species)=>species.triname)
         }
 
 			}
