@@ -90,6 +90,7 @@ const onEvent = (payload, reply) => {
         let first = payload.message.attachments.pop();
         let location = first.payload.coordinates;
         conversation.setLocation(location);
+        console.log("Set location to ", location)
         text = "Location set"
       }
 
