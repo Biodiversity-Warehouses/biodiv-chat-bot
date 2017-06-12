@@ -114,7 +114,7 @@ bot.on('message', (payload, reply) => {
           "content_type": "location"
         }]
       }
-      console.log("Send response  ", response);
+      console.log("Send response  ", JSON.stringify(response));
       reply(response, (err) => {
         console.log("Error:", err);
         if (err) throw err;
