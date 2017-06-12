@@ -47,7 +47,7 @@ var Conversation = function(speciesList) {
 
 		}
 
-		if(match(splitedMessage, ["Hilfe", "Fund Melden"])) {
+		if(match(splitedMessage, ["Hilfe", "Fund melden"])) {
 			var answerOptions = [];
 
 			var helpText = 'ℹ️ Alles klar du, dann lass uns loslegen und deinen Fund zusammen aufnehmen! Was für eine Spezies hast du denn gesehen?';
