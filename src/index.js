@@ -33,7 +33,7 @@ bot.on('error', (err) => {
   console.log(err.message)
 });
 
-bot.on('message', (payload, reply) => {
+const onEvent = (payload, reply) => {
   console.log("new Palyload", payload);
   console.log("new Palyload in Json ", JSON.stringify(payload));
 
@@ -50,11 +50,11 @@ bot.on('message', (payload, reply) => {
       console.log("Create new Session ");
       let api = new Api("https://biodiversity.hs-bremen.de/muscheln/","de_DE");
       api.login(bioDivUser, bioDivPassword).then((result) => {
-          "use strict";
-          console.log("Login successful");
-          let accessToken = result.accessToken;
-          return api.getSpeciesList(accessToken);
-        })
+        "use strict";
+        console.log("Login successful");
+        let accessToken = result.accessToken;
+        return api.getSpeciesList(accessToken);
+      })
           .then((species)=>{
             console.log("Got species")
             conversations[senderId] = new Conversation(species);
@@ -127,10 +127,10 @@ bot.on('message', (payload, reply) => {
     throw new Error(err)
   });
 
+};
 
-
-
-});
+bot.on('postback', onEvent);
+bot.on('message', onEvent);
 
 let app = express();
 
