@@ -88,6 +88,7 @@ bot.on('message', (payload, reply) => {
       let answer = result.answer;
       let answerOptions = result.answerOptions ? result.answerOptions : [];
       let locationRequest = result.locationRequest ? result.locationRequest : false;
+      let attachment = result.attachment ? result.attachment : null;
       console.log("Got answer from processMessage: ", answer, answerOptions);
       let quick_replies = answerOptions.map((optionStr) => {
         //Quick replies see: https://developers.facebook.com/docs/messenger-platform/send-api-reference/quick-replies
@@ -100,6 +101,9 @@ bot.on('message', (payload, reply) => {
 
 
       let response = {text: answer};
+      if(attachment != null){
+        response.attachment = attachment
+      }
       if (quick_replies.length > 0) {
         response.quick_replies = quick_replies
       }
