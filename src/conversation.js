@@ -59,6 +59,7 @@ var Conversation = function(speciesList) {
 		}
 
 		if(this.inFindingProcess && this.speciesName == null){
+    	console.log("Choose species text ", this.speciesCommonNames)
     	return {
     		answer: "Leider habe ich dich nicht so recht verstanden, hier einige Vorschläge was für Spezies ich so im Angebot hätte",
       	answerOptions: this.speciesCommonNames
