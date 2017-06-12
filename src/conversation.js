@@ -92,7 +92,7 @@ var Conversation = function(speciesList) {
 				let potentialSpecies = this.speciesList.filter((species)=> {
 
 					let nameSplits = species.triname.split(" ");
-					let nameSplits = nameSplits.concat(species.sciname.split(" "))
+					nameSplits = nameSplits.concat(species.sciname.split(" "));
 
 					console.log("nameSplits",nameSplits);
 					return match(splitedMessage,nameSplits )
