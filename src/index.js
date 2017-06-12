@@ -151,7 +151,7 @@ http.createServer(app).listen(port, () => {
   console.log("Server is up and running on port: " + port)
   removeOldConversation()
 
-  bot.emit("message",  {"sender":{"id":"1827550817256888"},"recipient":{"id":"1867472660185179"},"timestamp":1497286158849,"message":{"mid":"mid.$cAAaidLzv7JhiznryAVcnTWoal6l3","seq":48830,"text":"Hey"}})
+  //bot.emit("message",  {"sender":{"id":"1827550817256888"},"recipient":{"id":"1867472660185179"},"timestamp":1497286158849,"message":{"mid":"mid.$cAAaidLzv7JhiznryAVcnTWoal6l3","seq":48830,"text":"Hey"}})
 });
 
 /*
