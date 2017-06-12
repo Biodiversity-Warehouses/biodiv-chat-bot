@@ -3,7 +3,7 @@ const express = require('express');
 const bodyParser = require('body-parser');
 const Bot = require('messenger-bot');
 const Conversation = require('./conversation.js');
-
+const Api = require("./api");
 
 const port = process.env.PORT || 8080;
 const bioDivUser = process.env.BIODIV_USER || "your biodiv user ";
@@ -47,16 +47,21 @@ bot.on('message', (payload, reply) => {
   let promise = new Promise((resolve,reject)=>{
     "use strict";
     if (!conversations.hasOwnProperty(senderId)) {
+      console.log("Create new Session ");
+      let api = new Api();
       api.login(bioDivUser, bioDivPassword).then((result) => {
           "use strict";
           console.log("Login successful");
           let accessToken = result.accessToken;
           return api.getSpeciesList(accessToken);
         })
-          .then(resolve)
+          .then((species)=>{
+            console.log("Got species")
+            conversations[senderId] = new Conversation(species);
+            resolve(conversations[senderId]);
+          })
           .catch(reject);
 
-      conversations[senderId] = new Conversation(species);
     }
     else {
       resolve(conversations[senderId]);
@@ -145,13 +150,9 @@ app.post('/', (req, res) => {
 http.createServer(app).listen(port, () => {
   console.log("Server is up and running on port: " + port)
   removeOldConversation()
+
+  bot.emit("message",  {"sender":{"id":"1827550817256888"},"recipient":{"id":"1867472660185179"},"timestamp":1497286158849,"message":{"mid":"mid.$cAAaidLzv7JhiznryAVcnTWoal6l3","seq":48830,"text":"Hey"}})
 });
-
-
-const Api = require("./api");
-
-let api = new Api();
-
 
 /*
 

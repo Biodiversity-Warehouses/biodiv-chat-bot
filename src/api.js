@@ -1,5 +1,5 @@
 const fetch = require("node-fetch")
-
+const SHA256 = require("crypto-js/sha256");
 
 class Api {
 
@@ -9,9 +9,11 @@ class Api {
   }
 
   login(username, password){
+    let body = '{"username":"'+username+'","passwordHash":"'+SHA256(password)+'"}'
+    console.log("Start login", body)
     return fetch(this.BACKEND_URL + "users/login", {
       method: 'POST',
-      body: '{"username":"bdw","passwordHash":"d4225149709e3690fe0a2838e679d7085b92956aca8b38f502a006f95851bef1"}',
+      body: body,
       headers: {
         "Host": "biodiversity.hs-bremen.de",
         "Connection": "keep-alive",
