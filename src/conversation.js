@@ -16,7 +16,7 @@ var Conversation = function (speciesList, api, accessToken) {
 
   this.location = null;
   this.species = null;
-  this.date = Date.now();
+  this.date = new Date(Date.now());
 
   this.isActive = function () {
     let diff = this.lastAction - Date.now();
