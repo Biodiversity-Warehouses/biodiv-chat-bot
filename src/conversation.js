@@ -62,7 +62,7 @@ var Conversation = function(speciesList) {
     	console.log(splitedMessage);
     	console.log(this.speciesCommonNames);
     	console.log(this.speciesSientificNames);
-    	if(match(splitedMessage,this.speciesCommonNames) || match(splitedMessage,this.speciesSientificNames)){
+    	if(match([message],this.speciesCommonNames) || match([message],this.speciesSientificNames)){
 
         return {
         	answer: "Sehr schön, hab ich verstanden du hast " + splitedMessage + " bei dir gesehen. " +
