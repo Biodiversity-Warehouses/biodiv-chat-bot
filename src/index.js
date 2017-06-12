@@ -102,7 +102,9 @@ bot.on('message', (payload, reply) => {
 
       let response = {text: answer};
       if(attachment != null){
-        response.attachment = attachment
+        reply(response);
+        response.attachment = attachment;
+        delete response.text
       }
       if (quick_replies.length > 0) {
         response.quick_replies = quick_replies
