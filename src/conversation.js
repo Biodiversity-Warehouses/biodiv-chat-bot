@@ -23,6 +23,10 @@ var Conversation = function (speciesList) {
   this.setLocation = function (location) {
     this.location = location
   };
+  this.setSpeciesById = function(speciesId){
+    "use strict";
+    this.species  = this.speciesList.find((item)=>item.id === speciesId)
+  };
   this.processMessage = function (message) {
     console.log("Input> " + message);
     this.lastAction = Date.now();
@@ -88,7 +92,7 @@ var Conversation = function (speciesList) {
           answerOptions: ["Nachweisquallität", "Nachweismethode"]
         };
       }
-      else if (match([message], this.speciesNames)) {
+      else if (match([message], this.speciesNames) || match([message], "Species set")) {
 
         let potentialSpecies = this.speciesList.filter((species) => {
 

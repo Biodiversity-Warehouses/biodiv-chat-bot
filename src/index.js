@@ -37,8 +37,9 @@ const onEvent = (payload, reply) => {
   console.log("new Palyload", payload);
   console.log("new Palyload in Json ", JSON.stringify(payload));
 
-  let text = payload.message.text ? payload.message.text : "";
-  console.log(payload.message.attachments);
+  let message = payload.message ?  payload.message : {};
+  let text = message.text ? payload.message.text : "";
+  console.log(message.attachments);
   let senderId = payload.sender.id;
   //Create new converstation if necessar
 
@@ -76,7 +77,13 @@ const onEvent = (payload, reply) => {
       if (err) throw err;
       console.log("New Message from user ", text);
       console.log("converstaion object", conversation);
-      if (payload.message.attachments) {
+      if(payload.postback){
+        let speciesId = payload.postback.payload.split("-").pop();
+        speciesId = parseInt(speciesId);
+        conversation.setSpeciesById(speciesId)
+        text = "Species set"
+      }
+      if (message.attachments) {
         let first = payload.message.attachments.pop();
         let location = first.payload.coordinates;
         conversation.setLocation(location);
