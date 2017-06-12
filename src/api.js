@@ -4,8 +4,9 @@ const SHA256 = require("crypto-js/sha256");
 class Api {
 
 
-  constructor() {
-    this.BACKEND_URL = "https://biodiversity.hs-bremen.de/muscheln/"
+  constructor(backendUrl, currentLocal) {
+    this.BACKEND_URL = backendUrl
+    this.currentlocale = currentLocal
   }
 
   login(username, password) {
@@ -25,7 +26,7 @@ class Api {
         "Content-Type": "application/json;charset=UTF-8",
         "Accept": "application/json, text/plain, */*",
         "username": "@username",
-        "currentlocale": "en_US",
+        "currentlocale": this.currentlocale,
         "passwordHash": "@passwordHash",
         "Referer": "https://biodiversity.hs-bremen.de/muscheln/",
         "Accept-Encoding": "gzip, deflate, br",
@@ -45,7 +46,7 @@ class Api {
         "accesstoken": accessToken,
         "addprops": "@addprops",
         "Content-Type": "application/json;charset=UTF-8",
-        "currentlocale": "en_US",
+        "currentlocale": this.currentlocale,
         "detailscomment": "@detailscomment",
         "detailsdatefrom": "@detailsdatefrom",
         "detailsdatefromaccurancy": "@detailsdatefromaccurancy",
@@ -92,7 +93,7 @@ class Api {
           "Accept": "application/json, text/plain, */*",
           "accesstoken": accessToken,
           "Content-Type": "application/json;charset=UTF-8",
-          "currentlocale": "en_US",
+          "currentlocale": this.currentlocale,
           "Origin": "https//biodiversity.hs-bremen.de",
           "reference": "@reference",
           "Referer": "https//biodiversity.hs-bremen.de/muscheln/",

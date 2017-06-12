@@ -48,7 +48,7 @@ bot.on('message', (payload, reply) => {
     "use strict";
     if (!conversations.hasOwnProperty(senderId)) {
       console.log("Create new Session ");
-      let api = new Api();
+      let api = new Api("https://biodiversity.hs-bremen.de/muscheln/","de_DE");
       api.login(bioDivUser, bioDivPassword).then((result) => {
           "use strict";
           console.log("Login successful");
