@@ -78,9 +78,11 @@ const onEvent = (payload, reply) => {
       console.log("New Message from user ", text);
       console.log("converstaion object", conversation);
       if(payload.postback){
+        console.log("Got postback ", payload.postback)
         let speciesId = payload.postback.payload.split("-").pop();
         speciesId = parseInt(speciesId);
         conversation.setSpeciesById(speciesId)
+        console.log("Conversation state", JSON.stringify(conversation));
         text = "Species set"
       }
       if (message.attachments) {
