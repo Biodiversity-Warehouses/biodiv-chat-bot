@@ -6,8 +6,8 @@ var Conversation = function (speciesList) {
 
   this.speciesList = speciesList;
 
-  let commonNames = speciesList.map((obj) => obj.triname);
-  let scientificNames = speciesList.map((obj) => obj.sciname);
+  let commonNames = speciesList.map((obj) => obj.commonName);
+  let scientificNames = speciesList.map((obj) => obj.scientificName);
   this.speciesNames = commonNames.concat(scientificNames);
 
   this.location = null;
@@ -91,8 +91,8 @@ var Conversation = function (speciesList) {
 
         let potentialSpecies = this.speciesList.filter((species) => {
 
-          let nameSplits = species.triname.split(" ");
-          nameSplits = nameSplits.concat(species.sciname.split(" "));
+          let nameSplits = species.commonName.split(" ");
+          nameSplits = nameSplits.concat(species.scientificName.split(" "));
 
           nameSplits = nameSplits.filter((name) => name.toLowerCase().trim() != "muschel" && name.toLowerCase().trim() != "mussel")
           nameSplits = nameSplits.filter((name) => name.toLowerCase().trim() != "clam");
@@ -117,7 +117,7 @@ var Conversation = function (speciesList) {
         } else {
           return {
             answer: "Huch da brauch ich noch ein wenig mehr Infos.\nEs gibt mehrere Spezies, bitte wähle die richtige aus: ",
-            answerOptions: potentialSpecies.map((species) => species.triname)
+            answerOptions: potentialSpecies.map((species) => species.commonName)
           };
         }
 
@@ -133,10 +133,10 @@ var Conversation = function (speciesList) {
           "use strict";
 
           return {
-            title: species.triname,
-            subtitle: species.sciname,
-            item_url: "https://www.oculus.com/en-us/rift/",
-            image_url: "http://messengerdemo.parseapp.com/img/rift.png",
+            title: species.commonName,
+            subtitle: species.scientificName,
+            item_url: species.links.self,
+            image_url: species.imageUrl,
             buttons: [{
               type: "postback",
               title: "Ja, bin mir sicher!",
