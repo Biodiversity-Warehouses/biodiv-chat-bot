@@ -12,6 +12,7 @@ var Conversation = function (speciesList) {
 
   this.location = null;
   this.species = null;
+  this.date = Date.now();
 
   this.isActive = function () {
     let diff = this.lastAction - Date.now();
@@ -56,7 +57,7 @@ var Conversation = function (speciesList) {
     if (match([message], ["Fund melden"])) {
       var answerOptions = [];
 
-      var helpText = 'ℹ️ Alles klar du, dann lass uns loslegen und deinen Fund zusammen aufnehmen! Was für eine Spezies hast du denn gesehen?';
+      var helpText = 'ℹ️ Alles klar du, dann lass uns loslegen und deinen Fund zusammen aufnehmen! \n \n Schreibe mir einfach was du gesehen hat.';
 
       this.inFindingProcess = true;
 
@@ -140,12 +141,12 @@ var Conversation = function (speciesList) {
             buttons: [{
               type: "postback",
               title: "Ja, bin mir sicher!",
-              payload: "Ja das ist meine Spezies",
+              payload: "SPECIES_ID-" + species.id,
               },
               {
               type: "postback",
               title: "Mhmm, am ehsten",
-              payload: "Bin mir eher unsicher...",
+              payload: "SPECIES_ID-" + species.id,
             }],
           }
         });
