@@ -95,6 +95,7 @@ var Conversation = function(speciesList) {
 					nameSplits = nameSplits.concat(species.sciname.split(" "));
 
           nameSplits = nameSplits.filter((name)=> name.toLowerCase() !="muschel" && name.toLowerCase()!= "mussel")
+          nameSplits = nameSplits.filter((name)=> name.toLowerCase() !="clam ");
           nameSplits = nameSplits.filter((name)=> name.toLowerCase() !="fisch" && name.toLowerCase()!= "fish")
 					console.log("nameSplits",nameSplits);
 					return match(splitedMessage,nameSplits )
@@ -110,7 +111,8 @@ var Conversation = function(speciesList) {
 				else if (potentialSpecies.length == 1 ){
           return {
             answer: "Sehr schön, hab ich verstanden du hast " + message + " bei dir gesehen. " +
-            "\n Es wäre super wenn du mir noch deinen Standort zeigen könntest?"
+            "\n Es wäre super wenn du mir noch deinen Standort zeigen könntest?",
+            locationRequest: true
           };
 				}else {
           return {
