@@ -6,6 +6,8 @@ const Conversation = require('./conversation.js');
 
 
 const port = process.env.PORT || 8080;
+const bioDivUser  = process.env.BIODIV_USER || "your biodiv user ";
+const bioDivPassword  = process.env.BIODIV_PASSWORD|| "your biodiv pass";
 const conversations = {};
 
 function removeOldConversation(){
@@ -39,38 +41,55 @@ bot.on('message', (payload, reply) => {
   let senderId = payload.sender.id;
   //Create new converstation if necessary
   if(!conversations.hasOwnProperty(senderId)){
-    conversations[senderId] = new Conversation();
-  }
-  let conversation = conversations[senderId];
 
-  bot.getProfile(senderId, (err, profile) => {
-    if (err) throw err;
-    console.log("New Message from user ", text);
-    console.log("converstaion object", conversation);
-    let { answer, answerOptions}= conversation.processMessage(text);
-    console.log("Got answer from processMessage: ", answer,answerOptions);
-    let quick_replies = answerOptions.map((optionStr)=>{
-      //Quick replies see: https://developers.facebook.com/docs/messenger-platform/send-api-reference/quick-replies
-      return    {
-        "content_type":"TEXT",
-        "title":optionStr,
-        "payload":optionStr.toUpperCase()
-      }
+    api.login(bioDivUser, bioDivPassword).then((result)=>{
+      "use strict";
+      let accessToken = result.accessToken;
+      api.getSpeciesList(accessToken).then((species)=>{
+        console.log(species);
+        conversations[senderId] = new Conversation(species);
+
+        let conversation = conversations[senderId];
+
+
+        bot.getProfile(senderId, (err, profile) => {
+          if (err) throw err;
+          console.log("New Message from user ", text);
+          console.log("converstaion object", conversation);
+          let { answer, answerOptions}= conversation.processMessage(text);
+          console.log("Got answer from processMessage: ", answer,answerOptions);
+          let quick_replies = answerOptions.map((optionStr)=>{
+            //Quick replies see: https://developers.facebook.com/docs/messenger-platform/send-api-reference/quick-replies
+            return    {
+              "content_type":"TEXT",
+              "title":optionStr,
+              "payload":optionStr.toUpperCase()
+            }
+          });
+
+
+          let response = { text: answer};
+          if(quick_replies.length > 0 ){
+            response.quick_replies = quick_replies
+          }
+          console.log("Send response  ", answer,answerOptions);
+          reply(response, (err) => {
+            console.log("Error:", err);
+            if (err) throw err;
+
+            console.log(`Echoed back to ${profile.first_name} ${profile.last_name}: ${text}`)
+          })
+        })
+
+      });
+      console.log(result.accessToken)
+    }).catch((err)=>{
+      "use strict";
+      console.log(err)
     });
 
+  }
 
-    let response = { text: answer};
-    if(quick_replies.length > 0 ){
-      response.quick_replies = quick_replies
-    }
-    console.log("Send response  ", answer,answerOptions);
-    reply(response, (err) => {
-      console.log("Error:", err);
-      if (err) throw err;
-
-      console.log(`Echoed back to ${profile.first_name} ${profile.last_name}: ${text}`)
-    })
-  })
 });
 
 let app = express();
@@ -99,6 +118,10 @@ http.createServer(app).listen(port, ()=>{
   removeOldConversation()
 });
 
+
+const Api = require("./api");
+
+let api = new Api();
 
 /*
 
