@@ -16,6 +16,9 @@ var Conversation = function(speciesList) {
 			return diff <= fiveMinInMs;
 
 	};
+	this.setLocation = function(location){
+		this.location = location
+	};
 	this.processMessage = function(message) {
 		console.log("Input> " + message);
     this.lastAction = Date.now();
@@ -47,7 +50,7 @@ var Conversation = function(speciesList) {
 
 		}
 
-		if(match(splitedMessage, ["Hilfe", "Fund melden"])) {
+		if(match([message], ["Fund melden"])) {
 			var answerOptions = [];
 
 			var helpText = 'ℹ️ Alles klar du, dann lass uns loslegen und deinen Fund zusammen aufnehmen! Was für eine Spezies hast du denn gesehen?';
@@ -62,7 +65,26 @@ var Conversation = function(speciesList) {
     	console.log(splitedMessage);
     	console.log(this.speciesCommonNames);
     	console.log(this.speciesSientificNames);
-    	if(match([message],this.speciesCommonNames) || match([message],this.speciesSientificNames)){
+
+    	if(match([message],["Location set"])){
+        return {
+          answer: "Nun weiß ich schon wo du dich befindest, Vielleicht möchtest du noch mehr angeben?",
+          answerOptions: ["Nachweisquallität", "Nachweismethode", "Fund speichern"]
+        };
+			}
+			else if(match(splitedMessage,["Nachweismethode"])){
+        return {
+          answer: "Okay welche der folgenden Nachweismethoden wurde verwendet?",
+          answerOptions: [""]
+        };
+			}
+			else if(match(splitedMessage,["Nachweisquallität"])){
+        return {
+          answer: "Wie war die genaue Nachweisquallität?",
+          answerOptions: ["Nachweisquallität", "Nachweismethode"]
+        };
+			}
+    	else if(match([message],this.speciesCommonNames) || match([message],this.speciesSientificNames)){
 
         return {
         	answer: "Sehr schön, hab ich verstanden du hast " + splitedMessage + " bei dir gesehen. " +
@@ -74,7 +96,7 @@ var Conversation = function(speciesList) {
 
     	else if(this.speciesName == null){
 
-        console.log("Choose species text ", this.speciesCommonNames)
+        console.log("Choose species text ", this.speciesCommonNames);
         return {
           answer: "Leider habe ich dich nicht so recht verstanden, hier einige Vorschläge was für Spezies ich so im Angebot hätte",
           answerOptions: this.speciesCommonNames

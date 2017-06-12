@@ -36,7 +36,7 @@ bot.on('error', (err) => {
 bot.on('message', (payload, reply) => {
   console.log("new Palyload", payload);
 
-  let text = payload.message.text;
+  let text = payload.message.text ? payload.message.text : "";
   console.log(payload.message.attachments);
   let senderId = payload.sender.id;
   //Create new converstation if necessar
@@ -57,6 +57,14 @@ bot.on('message', (payload, reply) => {
         if (err) throw err;
         console.log("New Message from user ", text);
         console.log("converstaion object", conversation);
+        if(payload.message.attachments){
+          let first = payload.message.attachments.pop();
+          let location = first.payload.coordinates;
+          conversation.setLocation(location);
+          text = "Location set"
+        }
+
+
         let result = conversation.processMessage(text);
         let answer = result.answer;
         let answerOptions = result.answerOptions ? result.answerOptions : [];
