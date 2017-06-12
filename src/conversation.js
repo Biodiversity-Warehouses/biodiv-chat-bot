@@ -12,10 +12,8 @@ var Conversation = function(speciesList) {
 	this.isActive = function(){
 			let diff = this.lastAction - Date.now();
 			let fiveMinInMs = 1000 * 60 * 5;
-			if(diff > fiveMinInMs ){
-				return false
-			}
-			return true
+			return diff <= fiveMinInMs;
+
 	};
 	this.processMessage = function(message) {
 		console.log("Input> " + message);
