@@ -42,69 +42,82 @@ bot.on('message', (payload, reply) => {
   let senderId = payload.sender.id;
   //Create new converstation if necessar
 
-  api.login(bioDivUser, bioDivPassword).then((result) => {
+
+
+  let promise = new Promise((resolve,reject)=>{
     "use strict";
-    let accessToken = result.accessToken;
-    api.getSpeciesList(accessToken).then((species) => {
-
-      console.log(species);
-      if (!conversations.hasOwnProperty(senderId)) {
-        conversations[senderId] = new Conversation(species);
-      }
-      let conversation = conversations[senderId];
-
-
-      bot.getProfile(senderId, (err, profile) => {
-        if (err) throw err;
-        console.log("New Message from user ", text);
-        console.log("converstaion object", conversation);
-        if(payload.message.attachments){
-          let first = payload.message.attachments.pop();
-          let location = first.payload.coordinates;
-          conversation.setLocation(location);
-          text = "Location set"
-        }
-
-
-        let result = conversation.processMessage(text);
-        let answer = result.answer;
-        let answerOptions = result.answerOptions ? result.answerOptions : [];
-        let locationRequest = result.locationRequest ? result.locationRequest :false;
-        console.log("Got answer from processMessage: ", answer, answerOptions);
-        let quick_replies = answerOptions.map((optionStr) => {
-          //Quick replies see: https://developers.facebook.com/docs/messenger-platform/send-api-reference/quick-replies
-          return {
-            "content_type": "TEXT",
-            "title": optionStr,
-            "payload": optionStr.toUpperCase()
-          }
-        });
-
-
-        let response = {text: answer};
-        if (quick_replies.length > 0) {
-          response.quick_replies = quick_replies
-        }
-        if(locationRequest){
-          response.quick_replies = [{
-              "content_type":"location"
-          }]
-        }
-        console.log("Send response  ", answer, answerOptions);
-        reply(response, (err) => {
-          console.log("Error:", err);
-          if (err) throw err;
-
-          console.log(`Echoed back to ${profile.first_name} ${profile.last_name}: ${text}`)
+    console.log(species);
+    if (!conversations.hasOwnProperty(senderId)) {
+      api.login(bioDivUser, bioDivPassword).then((result) => {
+          "use strict";
+          let accessToken = result.accessToken;
+          return api.getSpeciesList(accessToken)
         })
-      })
+          .then(resolve)
+          .catch(reject);
 
-    });
-    console.log(result.accessToken)
-  }).catch((err) => {
-    "use strict";
-    console.log(err)
+      conversations[senderId] = new Conversation(species);
+    }
+    else {
+      resolve(conversations[senderId]);
+    }
+
+
   });
+
+  promise.then((conversation)=>{
+    "use strict";
+    bot.getProfile(senderId, (err, profile) => {
+      if (err) throw err;
+      console.log("New Message from user ", text);
+      console.log("converstaion object", conversation);
+      if (payload.message.attachments) {
+        let first = payload.message.attachments.pop();
+        let location = first.payload.coordinates;
+        conversation.setLocation(location);
+        text = "Location set"
+      }
+
+
+      let result = conversation.processMessage(text);
+      let answer = result.answer;
+      let answerOptions = result.answerOptions ? result.answerOptions : [];
+      let locationRequest = result.locationRequest ? result.locationRequest : false;
+      console.log("Got answer from processMessage: ", answer, answerOptions);
+      let quick_replies = answerOptions.map((optionStr) => {
+        //Quick replies see: https://developers.facebook.com/docs/messenger-platform/send-api-reference/quick-replies
+        return {
+          "content_type": "TEXT",
+          "title": optionStr,
+          "payload": optionStr.toUpperCase()
+        }
+      });
+
+
+      let response = {text: answer};
+      if (quick_replies.length > 0) {
+        response.quick_replies = quick_replies
+      }
+      if (locationRequest) {
+        response.quick_replies = [{
+          "content_type": "location"
+        }]
+      }
+      console.log("Send response  ", answer, answerOptions);
+      reply(response, (err) => {
+        console.log("Error:", err);
+        if (err) throw err;
+
+        console.log(`Echoed back to ${profile.first_name} ${profile.last_name}: ${text}`)
+      })
+    })
+  }).catch((err)=>{
+    "use strict";
+    throw new Error(err)
+  });
+
+
+
 
 });
 
