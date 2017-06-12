@@ -108,12 +108,12 @@ var Conversation = function (speciesList) {
 
         console.log("potentialSpecies", potentialSpecies);
 
-        if (potentialSpecies.length == 0) {
+        if (potentialSpecies.length == 0 && this.species === null) {
           return {
             answer: "Irgendwas ist hier schief gelaufen :( Ich konnte irgendwie keine Spezies finden ... "
           };
         }
-        else if (potentialSpecies.length == 1) {
+        else if (potentialSpecies.length == 1 || this.species != null) {
           return {
             answer: "Sehr schön, hab ich verstanden du hast " + message + " bei dir gesehen. " +
             "\n Es wäre super wenn du mir noch deinen Standort zeigen könntest?",
