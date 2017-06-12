@@ -10,6 +10,13 @@ var Conversation = function(speciesList) {
 	let scientificNames = speciesList.map((obj)=>obj.sciname);
   this.speciesNames = commonNames.concat(scientificNames);
 
+  this.speciesNames.map((name)=>name.split(" "));
+  this.speciesNames  = [].concat.apply([], this.speciesNames);
+
+  this.speciesNames= this.speciesNames.filter((name)=> name.toLowerCase().trim() !="muschel" && name.toLowerCase().trim()!= "mussel")
+  this.speciesNames = this.speciesNames.filter((name)=> name.toLowerCase().trim() !="clam");
+  this.speciesNames = this.speciesNames.filter((name)=> name.toLowerCase().trim() !="fisch" && name.toLowerCase().trim()!= "fish")
+
 	this.location = null;
 	this.species = null;
 
@@ -87,7 +94,7 @@ var Conversation = function(speciesList) {
           answerOptions: ["Nachweisquallität", "Nachweismethode"]
         };
 			}
-    	else if(match([message],this.speciesNames)){
+    	else if(match(splitedMessage,this.speciesNames)){
 
 				let potentialSpecies = this.speciesList.filter((species)=> {
 
