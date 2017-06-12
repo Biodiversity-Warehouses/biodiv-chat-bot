@@ -84,7 +84,7 @@ var Conversation = function (speciesList, api, accessToken) {
           answerOptions: ["Nachweisquallität", "Nachweismethode", "Fund speichern"]
         };
       }
-      else if (match(splitedMessage), "speichern"){
+      else if (match(splitedMessage,["speichern"])){
 
         console.log("Save finding");
         console.log(this.location);
