@@ -82,7 +82,7 @@ const onEvent = (payload, reply) => {
         let speciesId = payload.postback.payload.split("-").pop();
         speciesId = parseInt(speciesId);
         conversation.setSpeciesById(speciesId)
-        console.log("Conversation state", JSON.stringify(conversation));
+        console.log("Conversation state", JSON.stringify(conversation.species));
         text = "Species set"
       }
       if (message.attachments) {
