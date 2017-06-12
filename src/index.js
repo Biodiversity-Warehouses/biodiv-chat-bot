@@ -46,12 +46,12 @@ bot.on('message', (payload, reply) => {
 
   let promise = new Promise((resolve,reject)=>{
     "use strict";
-    console.log(species);
     if (!conversations.hasOwnProperty(senderId)) {
       api.login(bioDivUser, bioDivPassword).then((result) => {
           "use strict";
+          console.log("Login successful");
           let accessToken = result.accessToken;
-          return api.getSpeciesList(accessToken)
+          return api.getSpeciesList(accessToken);
         })
           .then(resolve)
           .catch(reject);
