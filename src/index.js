@@ -37,9 +37,7 @@ bot.on('message', (payload, reply) => {
   console.log("new Palyload", payload);
 
   let text = payload.message.text;
-  if (payload.message.attachments) {
-    text = "Bremne-Fisch-Krabbe"
-  }
+  console.log(payload.message.attachments);
   let senderId = payload.sender.id;
   //Create new converstation if necessar
 
@@ -59,7 +57,10 @@ bot.on('message', (payload, reply) => {
         if (err) throw err;
         console.log("New Message from user ", text);
         console.log("converstaion object", conversation);
-        let {answer, answerOptions}= conversation.processMessage(text);
+        let result = conversation.processMessage(text);
+        let answer = result.answer;
+        let answerOptions = result.answerOptions ? result.answerOptions : [];
+        let locationRequest = result.locationRequest ? result.locationRequest :false;
         console.log("Got answer from processMessage: ", answer, answerOptions);
         let quick_replies = answerOptions.map((optionStr) => {
           //Quick replies see: https://developers.facebook.com/docs/messenger-platform/send-api-reference/quick-replies
@@ -74,6 +75,11 @@ bot.on('message', (payload, reply) => {
         let response = {text: answer};
         if (quick_replies.length > 0) {
           response.quick_replies = quick_replies
+        }
+        if(locationRequest){
+          response.quick_replies = [{
+              "content_type":"location"
+          }]
         }
         console.log("Send response  ", answer, answerOptions);
         reply(response, (err) => {

@@ -5,6 +5,7 @@ var Conversation = function(speciesList) {
 	this.inFindingProcess = false;
 
 	this.speciesCommonNames = speciesList.map((obj)=>obj.triname);
+	this.speciesSientificNames = speciesList.map((obj)=>obj.sciname);
 
 	this.location = null;
 	this.speciesName = null;
@@ -56,12 +57,28 @@ var Conversation = function(speciesList) {
 			return { answer: helpText, answerOptions: answerOptions };
 		}
 
-		if(this.inFindingProcess && this.speciesName == null){
-    	console.log("Choose species text ", this.speciesCommonNames)
-    	return {
-    		answer: "Leider habe ich dich nicht so recht verstanden, hier einige Vorschläge was für Spezies ich so im Angebot hätte",
-      	answerOptions: this.speciesCommonNames
-      }
+		if(this.inFindingProcess){
+
+    	if(match(splitedMessage,this.speciesCommonNames) || match(splitedMessage,this.speciesSientificNames)){
+
+        return {
+        	answer: "Sehr schön, hab ich verstanden du hast " + splitedMessage + " bei dir gesehen. " +
+					"\n Es wäre super wenn du mir noch deinen Standort zeigen könntest?",
+					locationRequest: true
+        };
+
+			}
+
+    	else if(this.speciesName == null){
+
+        console.log("Choose species text ", this.speciesCommonNames)
+        return {
+          answer: "Leider habe ich dich nicht so recht verstanden, hier einige Vorschläge was für Spezies ich so im Angebot hätte",
+          answerOptions: this.speciesCommonNames
+        }
+
+			}
+
 		}
 
 		return {
