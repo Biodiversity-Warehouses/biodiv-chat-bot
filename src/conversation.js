@@ -1,145 +1,144 @@
-var Conversation = function(speciesList) {
-	this.lastAnswer = null;
-	this.lastAction = Date.now();
-	this.firstmessage = true;
-	this.inFindingProcess = false;
+var Conversation = function (speciesList) {
+  this.lastAnswer = null;
+  this.lastAction = Date.now();
+  this.firstmessage = true;
+  this.inFindingProcess = false;
 
-	this.speciesList = speciesList;
+  this.speciesList = speciesList;
 
-	let commonNames = speciesList.map((obj)=>obj.triname);
-	let scientificNames = speciesList.map((obj)=>obj.sciname);
+  let commonNames = speciesList.map((obj) => obj.triname);
+  let scientificNames = speciesList.map((obj) => obj.sciname);
   this.speciesNames = commonNames.concat(scientificNames);
 
-	this.location = null;
-	this.species = null;
+  this.location = null;
+  this.species = null;
 
-	this.isActive = function(){
-			let diff = this.lastAction - Date.now();
-			let fiveMinInMs = 1000 * 60 * 5;
-			return diff <= fiveMinInMs;
+  this.isActive = function () {
+    let diff = this.lastAction - Date.now();
+    let fiveMinInMs = 1000 * 60 * 5;
+    return diff <= fiveMinInMs;
 
-	};
-	this.setLocation = function(location){
-		this.location = location
-	};
-	this.processMessage = function(message) {
-		console.log("Input> " + message);
+  };
+  this.setLocation = function (location) {
+    this.location = location
+  };
+  this.processMessage = function (message) {
+    console.log("Input> " + message);
     this.lastAction = Date.now();
-		var splitedMessage = message.split(/[ ,]+/);
+    var splitedMessage = message.split(/[ ,]+/);
 
-		if(this.firstmessage || match(splitedMessage,["hey", "moin", "hallo", "hi", "servus"])) {
-			this.firstmessage = false;
-			var startText = 'Hey du, ich bin BioDiv und kann weiterhelfen, wenn du seltene Muscheln / Säugetiere oder Fische in deiner Umgebung gesichtet hast. ';
+    if (this.firstmessage || match(splitedMessage, ["hey", "moin", "hallo", "hi", "servus"])) {
+      this.firstmessage = false;
+      var startText = 'Hey du, ich bin BioDiv und kann weiterhelfen, wenn du seltene Muscheln / Säugetiere oder Fische in deiner Umgebung gesichtet hast. ';
 
-			var answerOptions = ["Hilfe", "Fund melden"];
+      var answerOptions = ["Hilfe", "Fund melden"];
 
-			return { answer: startText, answerOptions: answerOptions };
-		}
-		let yes = ["ja", "ok", "jo", "jup"];
-		let no = ["nein", "nö", "ne", "auf gar keinen fall", "halt die fresse"];
+      return {answer: startText, answerOptions: answerOptions};
+    }
+    let yes = ["ja", "ok", "jo", "jup"];
+    let no = ["nein", "nö", "ne", "auf gar keinen fall", "halt die fresse"];
 
-    if(match(splitedMessage, yes.concat(no))) {
-			var userAnswer = message;
-			var answerOptions = [];
+    if (match(splitedMessage, yes.concat(no))) {
+      var userAnswer = message;
+      var answerOptions = [];
 
-			this.lastAnswer = null;
-			if(match(splitedMessage, yes)) {
-				var jaText = "Ich halte Dich auf dem Laufenden. 👍"; 
-				return { answer: jaText, answerOptions: answerOptions };
-			} else {
-				var neinText = "Ok, frag' einfach, wenn du wissen willst, wie der Status ist. 😁 Ich bin bis auf weiteres stumm. 🙈🙊🙉";
-				return { answer: neinText, answerOptions: answerOptions };
-			}
+      this.lastAnswer = null;
+      if (match(splitedMessage, yes)) {
+        var jaText = "Ich halte Dich auf dem Laufenden. 👍";
+        return {answer: jaText, answerOptions: answerOptions};
+      } else {
+        var neinText = "Ok, frag' einfach, wenn du wissen willst, wie der Status ist. 😁 Ich bin bis auf weiteres stumm. 🙈🙊🙉";
+        return {answer: neinText, answerOptions: answerOptions};
+      }
 
-		}
+    }
 
-		if(match([message], ["Fund melden"])) {
-			var answerOptions = [];
+    if (match([message], ["Fund melden"])) {
+      var answerOptions = [];
 
-			var helpText = 'ℹ️ Alles klar du, dann lass uns loslegen und deinen Fund zusammen aufnehmen! Was für eine Spezies hast du denn gesehen?';
+      var helpText = 'ℹ️ Alles klar du, dann lass uns loslegen und deinen Fund zusammen aufnehmen! Was für eine Spezies hast du denn gesehen?';
 
       this.inFindingProcess = true;
 
-			return { answer: helpText, answerOptions: answerOptions };
-		}
+      return {answer: helpText, answerOptions: answerOptions};
+    }
 
-		if(this.inFindingProcess){
+    if (this.inFindingProcess) {
 
-    	console.log(splitedMessage);
-    	console.log(this.speciesCommonNames);
-    	console.log(this.speciesSientificNames);
+      console.log(splitedMessage);
+      console.log(this.speciesCommonNames);
+      console.log(this.speciesSientificNames);
 
-    	if(match([message],["Location set"])){
+      if (match([message], ["Location set"])) {
         return {
           answer: "Nun weiß ich schon wo du dich befindest, Vielleicht möchtest du noch mehr angeben?",
           answerOptions: ["Nachweisquallität", "Nachweismethode", "Fund speichern"]
         };
-			}
-			else if(match(splitedMessage,["Nachweismethode"])){
+      }
+      else if (match(splitedMessage, ["Nachweismethode"])) {
         return {
           answer: "Okay welche der folgenden Nachweismethoden wurde verwendet?",
           answerOptions: [""]
         };
-			}
-			else if(match(splitedMessage,["Nachweisquallität"])){
+      }
+      else if (match(splitedMessage, ["Nachweisquallität"])) {
         return {
           answer: "Wie war die genaue Nachweisquallität?",
           answerOptions: ["Nachweisquallität", "Nachweismethode"]
         };
-			}
-    	else if(match([message],this.speciesNames)){
+      }
+      else if (match([message], this.speciesNames)) {
 
-				let potentialSpecies = this.speciesList.filter((species)=> {
+        let potentialSpecies = this.speciesList.filter((species) => {
 
-					let nameSplits = species.triname.split(" ");
-					nameSplits = nameSplits.concat(species.sciname.split(" "));
+          let nameSplits = species.triname.split(" ");
+          nameSplits = nameSplits.concat(species.sciname.split(" "));
 
-          nameSplits = nameSplits.filter((name)=> name.toLowerCase().trim() !="muschel" && name.toLowerCase().trim()!= "mussel")
-          nameSplits = nameSplits.filter((name)=> name.toLowerCase().trim() !="clam");
-          nameSplits = nameSplits.filter((name)=> name.toLowerCase().trim() !="fisch" && name.toLowerCase().trim()!= "fish")
-					console.log("nameSplits",nameSplits);
-					return match(splitedMessage,nameSplits )
+          nameSplits = nameSplits.filter((name) => name.toLowerCase().trim() != "muschel" && name.toLowerCase().trim() != "mussel")
+          nameSplits = nameSplits.filter((name) => name.toLowerCase().trim() != "clam");
+          nameSplits = nameSplits.filter((name) => name.toLowerCase().trim() != "fisch" && name.toLowerCase().trim() != "fish")
+          console.log("nameSplits", nameSplits);
+          return match(splitedMessage, nameSplits)
         });
 
-				console.log("potentialSpecies", potentialSpecies);
+        console.log("potentialSpecies", potentialSpecies);
 
-				if(potentialSpecies.length == 0 ){
+        if (potentialSpecies.length == 0) {
           return {
             answer: "Irgendwas ist hier schief gelaufen :( Ich konnte irgendwie keine Spezies finden ... "
           };
-				}
-				else if (potentialSpecies.length == 1 ){
+        }
+        else if (potentialSpecies.length == 1) {
           return {
             answer: "Sehr schön, hab ich verstanden du hast " + message + " bei dir gesehen. " +
             "\n Es wäre super wenn du mir noch deinen Standort zeigen könntest?",
             locationRequest: true
           };
-				}else {
+        } else {
           return {
             answer: "Huch da brauch ich noch ein wenig mehr Infos.\nEs gibt mehrere Spezies, bitte wähle die richtige aus: ",
-            answerOptions: potentialSpecies.map((species)=>species.triname)
+            answerOptions: potentialSpecies.map((species) => species.triname)
           };
-				}
+        }
 
 
+      }
 
-			}
-
-    	else if(this.speciesName == null){
+      else if (this.speciesName == null) {
 
         console.log("Choose species text ", this.speciesCommonNames);
 
 
-        let listItems = this.speciesList.map((species)=>{
-        	"use strict";
+        let listItems = this.speciesList.map((species) => {
+          "use strict";
 
-        	return {
-            "template_type":"generic",
-            "elements":[
+          return {
+            "template_type": "generic",
+            "elements": [
               {
-                "title":"Welcome to Peter\'s Hats",
-                "image_url":"https://petersfancybrownhats.com/company_image.png",
-                "subtitle":"We\'ve got the right hat for everyone.",
+                "title": "Welcome to Peter\'s Hats",
+                "image_url": "https://petersfancybrownhats.com/company_image.png",
+                "subtitle": "We\'ve got the right hat for everyone.",
                 "default_action": {
                   "type": "web_url",
                   "url": "https://peterssendreceiveapp.ngrok.io/view?item=103",
@@ -147,62 +146,92 @@ var Conversation = function(speciesList) {
                   "webview_height_ratio": "tall",
                   "fallback_url": "https://peterssendreceiveapp.ngrok.io/"
                 },
-                "buttons":[
+                "buttons": [
                   {
-                    "type":"web_url",
-                    "url":"https://petersfancybrownhats.com",
-                    "title":"View Website"
-                  },{
-                    "type":"postback",
-                    "title":"Start Chatting",
-                    "payload":"DEVELOPER_DEFINED_PAYLOAD"
+                    "type": "web_url",
+                    "url": "https://petersfancybrownhats.com",
+                    "title": "View Website"
+                  }, {
+                    "type": "postback",
+                    "title": "Start Chatting",
+                    "payload": "DEVELOPER_DEFINED_PAYLOAD"
                   }
                 ]
               }
-						]
-					}
-				});
+            ]
+          }
+        });
 
-        let attachment =
-        {
-          "type":"template",
-					"payload": listItems
-        }
+        let attachment = {
+          type: "template",
+          payload: {
+            template_type: "generic",
+            elements: [{
+              title: "rift",
+              subtitle: "Next-generation virtual reality",
+              item_url: "https://www.oculus.com/en-us/rift/",
+              image_url: "http://messengerdemo.parseapp.com/img/rift.png",
+              buttons: [{
+                type: "web_url",
+                url: "https://www.oculus.com/en-us/rift/",
+                title: "Open Web URL"
+              }, {
+                type: "postback",
+                title: "Call Postback",
+                payload: "Payload for first bubble",
+              }],
+            }, {
+              title: "touch",
+              subtitle: "Your Hands, Now in VR",
+              item_url: "https://www.oculus.com/en-us/touch/",
+              image_url: "http://messengerdemo.parseapp.com/img/touch.png",
+              buttons: [{
+                type: "web_url",
+                url: "https://www.oculus.com/en-us/touch/",
+                title: "Open Web URL"
+              }, {
+                type: "postback",
+                title: "Call Postback",
+                payload: "Payload for second bubble",
+              }]
+            }]
+          }
+        };
 
         return {
           answer: "Leider habe ich dich nicht so recht verstanden, hier einige Vorschläge was für Spezies ich so im Angebot hätte",
-          attachment:attachment
+          attachment: attachment
         }
 
-			}
+      }
 
-		}
+    }
 
-		return {
+    return {
       answer: "Ich konnte dich leider nicht verstehen... 😰",
       answerOptions: ["Hilfe"]
     }
 
 
-	};
+  };
 
-	return this;
+  return this;
 };
 
 function match(splitedMessage, keyWords) {
 
-	for(var word in splitedMessage) {
-		for(var keyWord in keyWords) {
-			var lowerCaseWord = splitedMessage[word].toLowerCase();
-			var lowerCaseKeyword = keyWords[keyWord].toLowerCase();
+  for (var word in splitedMessage) {
+    for (var keyWord in keyWords) {
+      var lowerCaseWord = splitedMessage[word].toLowerCase();
+      var lowerCaseKeyword = keyWords[keyWord].toLowerCase();
 
-			if(lowerCaseWord == lowerCaseKeyword) {
-				return true;
-			}
-		}
-	}
+      if (lowerCaseWord == lowerCaseKeyword) {
+        return true;
+      }
+    }
+  }
 
-	return false;
+  return false;
 }
 
 
