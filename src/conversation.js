@@ -59,6 +59,9 @@ var Conversation = function(speciesList) {
 
 		if(this.inFindingProcess){
 
+    	console.log(splitedMessage);
+    	console.log(this.speciesCommonNames);
+    	console.log(this.speciesSientificNames);
     	if(match(splitedMessage,this.speciesCommonNames) || match(splitedMessage,this.speciesSientificNames)){
 
         return {
