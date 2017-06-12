@@ -89,7 +89,7 @@ var Conversation = function (speciesList, api, accessToken) {
         console.log("Save finding");
         console.log(this.location);
         console.log(this.species);
-        this.api.reportFinding(this.accessToken,this.species.id,1,this.location.lat, location.lng,this.date);
+        this.api.reportFinding(this.accessToken,this.species.id,1,this.location.lat, this.location.long,this.date);
 
         return {
           answer: "Alles klar habe deinen Fund gespeichert! :) ",
