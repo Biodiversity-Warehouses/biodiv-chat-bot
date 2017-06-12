@@ -92,7 +92,7 @@ var Conversation = function (speciesList) {
           answerOptions: ["Nachweisquallität", "Nachweismethode"]
         };
       }
-      else if (match([message], this.speciesNames) || match([message], "Species set")) {
+      else if (match([message], this.speciesNames) || this.species!=null) {
 
         let potentialSpecies = this.speciesList.filter((species) => {
 
