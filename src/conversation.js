@@ -1,8 +1,12 @@
-var Conversation = function (speciesList) {
+
+var Conversation = function (speciesList, api, accessToken) {
   this.lastAnswer = null;
   this.lastAction = Date.now();
   this.firstmessage = true;
   this.inFindingProcess = false;
+  this.api = api;
+
+  this.accessToken = accessToken
 
   this.speciesList = speciesList;
 
@@ -78,6 +82,18 @@ var Conversation = function (speciesList) {
         return {
           answer: "Nun weiß ich schon wo du dich befindest, Vielleicht möchtest du noch mehr angeben?",
           answerOptions: ["Nachweisquallität", "Nachweismethode", "Fund speichern"]
+        };
+      }
+      else if (match(splitedMessage), "speichern"){
+
+        console.log("Save finding");
+        console.log(this.location);
+        console.log(this.species);
+        this.api.reportFinding(this.accessToken,this.species.id,1,this.location.lat, location.lng,this.date);
+
+        return {
+          answer: "Alles klar habe deinen Fund gespeichert! :) ",
+          answerOptions: ["Fund melden", "Hilfe"]
         };
       }
       else if (match(splitedMessage, ["Nachweismethode"])) {

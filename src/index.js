@@ -45,6 +45,7 @@ const onEvent = (payload, reply) => {
 
 
 
+  let accessToken
   let promise = new Promise((resolve,reject)=>{
     "use strict";
     if (!conversations.hasOwnProperty(senderId)) {
@@ -53,12 +54,12 @@ const onEvent = (payload, reply) => {
       api.login(bioDivUser, bioDivPassword).then((result) => {
         "use strict";
         console.log("Login successful");
-        let accessToken = result.accessToken;
+        accessToken = result.accessToken;
         return api.getSpeciesList(accessToken);
-      })
+        })
           .then((species)=>{
             console.log("Got species")
-            conversations[senderId] = new Conversation(species);
+            conversations[senderId] = new Conversation(species, api, accessToken);
             resolve(conversations[senderId]);
           })
           .catch(reject);
