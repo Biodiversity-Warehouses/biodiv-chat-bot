@@ -94,6 +94,8 @@ var Conversation = function(speciesList) {
 					let nameSplits = species.triname.split(" ");
 					nameSplits = nameSplits.concat(species.sciname.split(" "));
 
+          nameSplits = nameSplits.filter((name)=> name.toLowerCase() !="muschel" && name.toLowerCase()!= "mussel")
+          nameSplits = nameSplits.filter((name)=> name.toLowerCase() !="fisch" && name.toLowerCase()!= "fish")
 					console.log("nameSplits",nameSplits);
 					return match(splitedMessage,nameSplits )
         });
