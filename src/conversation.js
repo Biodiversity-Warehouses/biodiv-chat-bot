@@ -114,8 +114,11 @@ var Conversation = function (speciesList) {
           };
         }
         else if (potentialSpecies.length == 1 || this.species != null) {
+          if(potentialSpecies.length===1){
+            this.species = potentialSpecies.pop()
+          }
           return {
-            answer: "Sehr schön, hab ich verstanden du hast " + message + " bei dir gesehen. " +
+            answer: "Sehr schön, hab ich verstanden du hast " + this.species.commonName + " bei dir gesehen. " +
             "\n Es wäre super wenn du mir noch deinen Standort zeigen könntest?",
             locationRequest: true
           };
